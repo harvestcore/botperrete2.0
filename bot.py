@@ -1,11 +1,11 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from toot import Toot
 
-scheduler = BlockingScheduler()
+sched = BlockingScheduler(timezone='Europe/Madrid')
 
 @sched.scheduled_job('interval', minutes=1)
-def job():
+def timed_job():
     Toot.commit_tweet("XD")
 
 
-scheduler.start()
+sched.start()
