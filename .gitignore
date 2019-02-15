@@ -1,6 +1,7 @@
 # Otras cosas
 .vscode
 config.json
+*.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
