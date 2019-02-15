@@ -1,4 +1,4 @@
-import os, tweepy
+import os, tweepy, random
 
 from google_images_download import google_images_download
 
@@ -16,9 +16,16 @@ class Toot:
     def commit_tweet_with_media(media, tweet):
         api.update_with_media(media, tweet)
 
-    def get_timeline():
-        tuits = api.me()
-        print(tuits._json)
+    def get_timeline(id):
+        tl = api.user_timeline(id)
+        tuits = []
+
+        for tuit in tl:
+            tt = tuit._json["text"]
+            if ('RT' not in tt and '@' not in tt and 'https' not in tt):
+                tuits.append(tt)
+
+        return tuits
 
     def download_image(keyword):
         arguments = {
@@ -56,3 +63,41 @@ class Toot:
 
         # Borro imagen
         os.remove(name)
+
+    def boterino():
+        ids = [362680939, 25073877, 500704345, 926931384492535808]
+        tuits = []
+
+        for id in ids:
+            tt = Toot.get_timeline(id)
+            for t in tt:
+                tuits.append(t)
+
+        palabras = []
+
+        for tuit in tuits:
+            newtuit = tuit.split(' ')
+            rn = random.randint(0, len(newtuit) - 1)
+            palabras.append(newtuit[rn])
+
+        nrtuit = random.randint(1, len(palabras))
+
+        final_tuit_list = []
+
+        for i in range(nrtuit):
+            nrp = random.randint(0, len(palabras) - 1)
+            final_tuit_list.append(palabras[nrp])
+
+        nrpimg = random.randint(1, len(palabras))
+
+        keyword = palabras[nrpimg]
+
+        # concatenar palabras
+        final_tuit = ""
+
+        for word in final_tuit_list:
+            final_tuit += (word + " ")
+
+        Toot.download_image_and_commit_tweet(keyword, final_tuit)
+
+
