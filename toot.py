@@ -33,7 +33,7 @@ class Toot:
             "limit": 1,
             "format": "jpg",
             "no_directory": True,
-            "output_directory": "."
+            "output_directory": "/tmp"
         }
         
         # Descargo imagen
@@ -43,7 +43,6 @@ class Toot:
         splitted = paths[keyword][0].split("/")
 
         # Nombre del archivo
-
         name = splitted[len(splitted)-1]
 
         return name
@@ -59,10 +58,10 @@ class Toot:
         print(name)
 
         # Commit del tuit con la img
-        Toot.commit_tweet_with_media(name, tweet)
+        Toot.commit_tweet_with_media("/tmp/" + name, tweet)
 
         # Borro imagen
-        os.remove(name)
+        os.remove("/tmp/" + name)
 
     def boterino():
         ids = [362680939, 25073877, 500704345, 926931384492535808]
@@ -88,7 +87,7 @@ class Toot:
             nrp = random.randint(0, len(palabras) - 1)
             final_tuit_list.append(palabras[nrp])
 
-        nrpimg = random.randint(1, len(palabras))
+        nrpimg = random.randint(0, len(palabras)-1)
 
         keyword = palabras[nrpimg]
 
