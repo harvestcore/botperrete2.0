@@ -9,7 +9,7 @@ sched = BlockingScheduler(timezone='Europe/Madrid')
 #     tw = ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))
 #     Toot.commit_tweet(tw)
 
-@sched.scheduled_job('interval', minutes=1)
+@sched.scheduled_job('interval', minutes=30)
 def boterino():
     Toot.boterino()
 
