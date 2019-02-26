@@ -57,9 +57,9 @@ class Toot:
 
     def timeline_to_file(filename, id_):
         if os.path.isfile(filename):
-            archivo = open(str(id_) + ".txt", "a")
+            archivo = open(filename, "a")
         else:
-            archivo = open(str(id_) + ".txt", "w")
+            archivo = open(filename, "w")
       
         tuits = Toot.get_all_timeline(id_)
         print("No. tuits: ", len(tuits))
@@ -112,7 +112,7 @@ class Toot:
 
         for idd in ids:
             print("ID: ", idd)
-            Toot.timeline_to_file("tl.txt", idd)
+            Toot.timeline_to_file("tl_" + idd + ".txt", idd)
 
     def boterino():
         ids = [25073877, 500704345, 926931384492535808, 1053765789722009600, 44196397, 57099808]
