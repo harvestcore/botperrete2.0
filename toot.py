@@ -16,17 +16,60 @@ class Toot:
     def commit_tweet_with_media(media, tweet):
         api.update_with_media(media, tweet)
 
-    def get_timeline(id):
-        tl = api.user_timeline(id)
+    def get_timeline(id_, qtty):
+        if qtty < 1:
+            qtty = 1
+        elif qtty > 200:
+            qtty = 200
+
+        tl = api.user_timeline(id=id_, count=qtty)
         tuits = []
 
         for tuit in tl:
             tt = tuit._json["text"]
-            if ('RT' not in tt and '@' not in tt and 'https' not in tt):
+            if ('RT' not in tt and '@' not in tt and '://' not in tt):
                 tuits.append(tt)
 
         return tuits
 
+    def get_all_timeline(id_):
+        all_tweets = []
+
+        new_tweets = api.user_timeline(id=id_, count=200)
+	
+        for tuit in new_tweets:
+            tt = tuit._json["text"]
+            oldest = tuit.id
+            # if ('RT' not in tt and '@' not in tt and '://' not in tt):
+            all_tweets.append(tt)
+        
+        while len(new_tweets) > 0:
+            new_tweets = api.user_timeline(id=id_, count=200, max_id=oldest)
+            
+            for tuit in new_tweets:
+                tt = tuit._json["text"]
+                oldest = tuit.id
+                # if ('RT' not in tt and '@' not in tt and '://' not in tt):
+                    
+                all_tweets.append(tt)
+
+        return all_tweets
+
+    def timeline_to_file(filename, id_):
+        if os.path.isfile(filename):
+            archivo = open(str(id_) + ".txt", "a")
+        else:
+            archivo = open(str(id_) + ".txt", "w")
+      
+        tuits = Toot.get_all_timeline(id_)
+        print("No. tuits: ", len(tuits))
+        print("\n")
+
+        for tuit in tuits:
+            archivo.write(tuit + "\n")
+
+        archivo.close()
+    
     def download_image(keyword):
         arguments = {
             "keywords": keyword,
@@ -62,6 +105,14 @@ class Toot:
 
         # Borro imagen
         os.remove("/tmp/" + name)
+
+    def testfile():
+        # ids = [44196397, 79293791, 15628527, 69008563, 38807133, 25073877]
+        ids = [69008563, 38807133, 25073877]
+
+        for idd in ids:
+            print("ID: ", idd)
+            Toot.timeline_to_file("tl.txt", idd)
 
     def boterino():
         ids = [25073877, 500704345, 926931384492535808, 1053765789722009600, 44196397, 57099808]
