@@ -2,6 +2,7 @@
 .vscode
 config.json
 *.jpg
+tl_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
